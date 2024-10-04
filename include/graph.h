@@ -62,7 +62,7 @@ public:
     std::set<T> get_nth_neighbors(T vertex, unsigned n) const;
     double jaccard(const T &u, const T &v) const;  // 获取节点对之间的jaccard系数
     std::map<Edge<T>, double> distance_floyd() const;  // 弗洛伊德算法，获取所有节点之间的距离
-}
+};
 
 #include "graph.hpp"
 

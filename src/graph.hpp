@@ -26,7 +26,7 @@ bool Graph<T>::is_connected(T u, T v) const {
 }
 
 template <class T>
-void Graph<T>::add_edge(T u, T v, float weight = 1) {
+void Graph<T>::add_edge(T u, T v, float weight) {
     add_node(u);
     add_node(v);
     neighbors[u].insert(v);

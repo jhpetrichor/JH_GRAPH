@@ -7,9 +7,6 @@
 
 using namespace std;
 
-// io.cpp
-using namespace std;
-
 template <typename... Args>
 vector<tuple<Args...>> read_edges_generic(const string& filename);
 
@@ -19,4 +16,4 @@ vector<tuple<int, int>> read_edges_int(const string& filename);
 vector<tuple<int, int, double>> read_edges_int_weight(const string& filename);
 
 
-#endif JH_// GRAPH_UTILS_H
+#endif // GRAPH_UTILS_H
