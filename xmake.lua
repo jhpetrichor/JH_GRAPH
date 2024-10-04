@@ -1,6 +1,12 @@
-add_rules("mode.release", "mode.debug")
 set_languages("c++20")
+add_rules("mode.release", "mode.debug")
 
+if is_mode("release") then
+    set_optimize("fastest") -- 将优化设置为最高等级
+    add_cxflags("-fpreprocessed") -- 指定预处理的文件
+    set_policy("check.auto_ignore_flags", false)
+    add_ldflags("-Wl,--strip-all") -- 如果需要，在链接时移除符号信息
+end
 
 add_includedirs("include",
                 "src",
@@ -10,10 +16,10 @@ add_includedirs("include",
 
 set_targetdir("$(projectdir)/bin/")
 
-target("main")
+target("main_club1")
     set_kind("binary")
-    -- add_files("./tests/main.cpp", "src/graph.cpp")
     add_files("./tests/main.cpp", "src/utils/io.cpp")
+    
 --
 -- If you want to known more usage about xmake, please see https://xmake.io
 --

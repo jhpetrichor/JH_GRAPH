@@ -26,7 +26,7 @@ bool Graph<T>::is_connected(T u, T v) const {
 }
 
 template <class T>
-void Graph<T>::add_edge(T u, T v, float weight = 1) {
+void Graph<T>::add_edge(T u, T v, float weight) {
     add_node(u);
     add_node(v);
     neighbors[u].insert(v);
@@ -73,28 +73,38 @@ double Graph<T>::jaccard(const T &u, const T &v) const {
         v_neighbors.end(),
         std::inserter(common_neighbors, common_neighbors.begin()));
     int size = common_neighbors.size();
-
-    // for (auto s : u_neighbors) {
-    //     cout << s << " ";
-    // }
-    // cout << "\n";
-    // for (auto s : v_neighbors) {
-    //     cout << s << " ";
-    // }
-    // cout << "\n";
-    // cout << "common neighbors: " << size << "\n";
-    // for (auto s : common_neighbors) {
-    //     cout << s << " ";
-    // }
-    // cout << "\n";
-
     return static_cast<double>(size) /
            static_cast<double>(u_neighbors.size() + v_neighbors.size() - size);
 }
 
 template <class T>
 std::map<Edge<T>, double> Graph<T>::distance_floyd() const {
+    std::map<Edge<T>, double> distance;
 
+    // Initialize the distance map with direct edge weights or 'infinity' if there is no edge
+    for (const auto& node : nodes) {
+        for (const auto& neighbor : neighbors.find(node)->second) {
+            distance[Edge<T>(node, neighbor)] = edges.find(Edge<T>(node, neighbor))->second;
+        }
+        for (const auto& otherNode : nodes) {
+            if (node != otherNode && neighbors.find(node)->second.find(otherNode) == neighbors.find(node)->second.end()) {
+                distance[Edge<T>(node, otherNode)] =std::numeric_limits<double>::max(); // Infinity
+            }
+        }
+    }
+
+        // Floyd-Warshall algorithm
+    for (const auto& intermediate : nodes) {
+        for (const auto& from : nodes) {
+            for (const auto& to : nodes) {
+                if (distance[Edge<T>(from, to)] > distance[Edge<T>(from, intermediate)] + distance[Edge<T>(intermediate, to)]) {
+                    distance[Edge<T>(from, to)] = distance[Edge<T>(from, intermediate)] + distance[Edge<T>(intermediate, to)];
+                }
+            }
+        }
+    }
+
+    return distance;
 }
 
 #endif  // JH_GRAPH_GRAPH_HPP

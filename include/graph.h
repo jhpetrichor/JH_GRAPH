@@ -5,43 +5,27 @@
 #include <map>
 #include <set>
 #include <tuple>
+#include <memory>
 
 template <class T>
 class Edge {
 public:
-    std::tuple<T, T> edge;
+    T source;
+    T target;
+
+public:
     Edge() = default;
-
-    Edge(const T &u, const T &v) : edge(u, v) {}
-
-    bool operator==(const Edge<T> &other) const { return edge == other.edge; }
-    bool operator!=(const Edge<T> &other) const { return edge != other.edge; }
-
-    bool operator<(const Edge<T> &other) const { return edge < other.edge; }
-
-    T &operator[](std::size_t index) {
-        if (index == 0) {
-            return std::get<0>(edge);
-        } else if (index == 1) {
-            return std::get<1>(edge);
-        } else {
-            throw std::out_of_range("Index out of range");
-        }
-      }
-
-    const T &operator[](std::size_t index) const {
-        if (index == 0)
-            return std::get<0>(edge);
-        else if (index == 1)
-            return std::get<1>(edge);
-        else
-            throw std::out_of_range("Index out of range");
-    }
-
-    friend std::ostream &operator<<(std::ostream &os, const Edge<T> &e) {
-        os << "(" << e.get_u() << ", " << e.get_v() << ")";
-        return os;
-    }
+    Edge(const T &u, const T &v);
+    bool operator==(const Edge<T> &other) const;
+    bool operator!=(const Edge<T> &other) const;
+    bool operator<(const Edge<T> &other) const;
+    T &operator[](std::size_t index);
+    const T &operator[](std::size_t index) const;
+    friend std::ostream &operator<<(std::ostream &os, const Edge<T> &e);
+    // friend std::ostream &operator<<(std::ostream &os, const Edge<T> &e) {
+    //     os << "(" << std::get<0>(e) << ", " << std::get<1>(e) << ")";
+    //     return os;
+    // }
 };
 
 template <class T>
@@ -49,8 +33,9 @@ class Graph {
 public:
     std::map<T, unsigned int> degree;
     std::map<T, std::set<T>> neighbors;
-    std::map<Edge<T>, float> edges;
+    std::map<Edge<T>, double> edges;
     std::set<T> nodes;
+    std::map<Edge<T>, double>* distance;   //
 
    public:
     [[nodiscard]]
@@ -62,8 +47,9 @@ public:
     std::set<T> get_nth_neighbors(T vertex, unsigned n) const;
     double jaccard(const T &u, const T &v) const;  // 获取节点对之间的jaccard系数
     std::map<Edge<T>, double> distance_floyd() const;  // 弗洛伊德算法，获取所有节点之间的距离
-}
+};
 
 #include "graph.hpp"
+#include "edge.hpp"
 
 #endif  // endif GRAPH_GRAPH_H

@@ -12,5 +12,6 @@ std::map<T, double> degree_center(Graph<T>& g) {
 
 template<class T>
 std::map<T, double> closeness_center(Graph<T>& g) {
-	std::map<Edge<T>, double> distance__map;     // 记录任意两个节点之间的距离 使用弗洛伊德算法
+	std::map<Edge<T>, double> distance = g.distance_floyd();
+	
 }
