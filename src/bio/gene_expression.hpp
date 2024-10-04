@@ -1,0 +1,6 @@
+#ifndef JH_GRAPH_GENE_EXPRESSION_HPP
+#define JH_GRAPH_GENE_EXPRESSION_HPP
+
+
+
+#endif
